@@ -1,2 +1,2 @@
 # firebase-playground
-Firebase, Flutter 연습
+Firebase 연습

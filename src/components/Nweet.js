@@ -24,7 +24,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
   const onSubmit = async (event) => {
     event.preventDefault()
     await updateDoc(doc(dbService, 'nweets', nweetObj.id), {
-      text: newNweet
+      text: newNweet,
     })
     setEditing(false)
   }
@@ -33,11 +33,15 @@ const Nweet = ({ nweetObj, isOwner }) => {
     <div>
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
-            <input value={newNweet} onChange={onChange} required />
-            <input type="submit" value="Update Nweet" />
-          </form>
-          <button onClick={toggleEditing}>Cancel</button>
+          {isOwner && (
+            <>
+              <form onSubmit={onSubmit}>
+                <input value={newNweet} onChange={onChange} required />
+                <input type="submit" value="Update Nweet" />
+              </form>
+              <button onClick={toggleEditing}>Cancel</button>
+            </>
+          )}
         </>
       ) : (
         <>

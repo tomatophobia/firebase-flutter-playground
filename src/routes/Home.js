@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { dbService } from 'fbase'
-import { collection, addDoc, getDocs, doc, onSnapshot } from 'firebase/firestore'
+import { collection, addDoc, onSnapshot } from 'firebase/firestore'
+import Nweet from 'components/Nweet'
 
 const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState('')
   const [nweets, setNweets] = useState([])
 
   useEffect(() => {
-    onSnapshot(collection(dbService, "nweets"), (snapshot) => {
-      const nweetArray = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+    onSnapshot(collection(dbService, 'nweets'), (snapshot) => {
+      const nweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
       setNweets(nweetArray)
     })
   }, [])
@@ -43,9 +47,11 @@ const Home = ({ userObj }) => {
       </form>
       <div>
         {nweets.map((nweet) => (
-          <div key={nweet.id}>
-            <h4>{nweet.text}</h4>
-          </div>
+          <Nweet
+            key={nweet.id}
+            nweetObj={nweet}
+            isOwner={nweet.creatorId === userObj.uid}
+          />
         ))}
       </div>
     </div>
